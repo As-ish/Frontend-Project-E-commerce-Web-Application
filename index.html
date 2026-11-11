@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>OnlineShop - Online Shopping India</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div id="hdr"></div>
+    <main class="wrap" id="main"></main>
+    <div id="ftr"></div>
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+      chrome();
+      const q = (qs.get("q") || "").toLowerCase().trim(),
+        cat = qs.get("cat"),
+        home = !q && !cat;
+      let sort = "";
+      const list = () => {
+        let l = PRODUCTS.filter(
+          (p) =>
+            (!cat || p.cat === cat) &&
+            (!q ||
+              (p.name + " " + p.brand + " " + CATS[p.cat])
+                .toLowerCase()
+                .includes(q)),
+        );
+        if (sort === "lo") l.sort((a, b) => a.price - b.price);
+        if (sort === "hi") l.sort((a, b) => b.price - a.price);
+        if (sort === "rt") l.sort((a, b) => b.rating - a.rating);
+        return l;
+      };
+      function draw() {
+        const l = list();
+        $("#grid").innerHTML = l.length
+          ? l.map(card).join("")
+          : '<div class="box ctr" style="grid-column:1/-1">Koi product nahi mila. Doosra keyword try karo.</div>';
+        $("#cnt").textContent = l.length + " products";
+      }
+      const first = Object.keys(CATS).map((k) =>
+        PRODUCTS.find((p) => p.cat === k),
+      );
+      $("#main").innerHTML =
+        (home
+          ? `<section class="hero"><h1>Big Savings Sale</h1><p>Up to 60% off on watches, fashion, headphones & home electronics</p><a class="btn w" href="#list">Shop Now</a></section><div class="tiles">${first.map((p) => `<a class="tile" href="index.html?cat=${p.cat}"><img src="${p.img}" alt=""><div>${CATS[p.cat]}</div></a>`).join("")}</div>`
+          : "") +
+        `<section class="box" id="list"><div class="bar"><h2>${home ? "Top Deals for You" : cat ? CATS[cat] || "Products" : 'Results for "' + esc(qs.get("q")) + '"'} <span class="g" id="cnt" style="font-size:13px"></span></h2><select id="sort"><option value="">Sort: Relevance</option><option value="lo">Price: Low to High</option><option value="hi">Price: High to Low</option><option value="rt">Rating</option></select></div></section><div class="grid" id="grid"></div>`;
+      $("#sort").onchange = (e) => {
+        sort = e.target.value;
+        draw();
+      };
+      draw();
+    </script>
+  </body>
+</html>

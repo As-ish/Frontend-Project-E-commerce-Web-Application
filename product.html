@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Product - OnlineShop</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div id="hdr"></div>
+    <main class="wrap" id="main" style="margin-top: 12px"></main>
+    <div id="ftr"></div>
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+      chrome();
+      const p = byId(qs.get("id"));
+      let size = "",
+        qty = 1;
+      if (!p)
+        $("#main").innerHTML =
+          '<div class="box ctr">Product nahi mila. <a class="lnk" href="index.html">Home par jao</a></div>';
+      else {
+        document.title = p.name + " - OnlineShop";
+        $("#main").innerHTML =
+          `<div class="pd"><div class="img"><img src="${p.img}" alt="${esc(p.name)}"><div class="row"><button class="btn y" id="add">🛒 ADD TO CART</button><button class="btn" id="buy">⚡ BUY NOW</button></div></div>
+<div><div class="box"><div class="g">${CATS[p.cat]} › ${esc(p.brand)}</div><h1 style="font-size:20px;font-weight:500">${esc(p.name)}</h1><div><span class="star">${p.rating} ★</span> <span class="g">${p.reviews.toLocaleString("en-IN")} ratings</span></div>
+<div class="pr" style="margin:12px 0"><b style="font-size:28px">${inr(p.price)}</b> <s>${inr(p.mrp)}</s> <span class="ok">${off(p)}% off</span></div>
+<ul class="l"><li>Free delivery on orders above ₹499</li><li>Cash on Delivery available</li><li>UPI, Cards & NetBanking accepted</li></ul>
+${p.sizes ? `<p style="margin-top:14px"><b>Select Size</b> <span class="g" id="se"></span></p><div class="sizes">${p.sizes.map((s) => `<button data-s="${s}">${s}</button>`).join("")}</div>` : ""}
+<div class="qty"><b>Quantity</b><button id="m">−</button><span id="q">1</span><button id="pl">+</button></div>
+<p>🚚 Delivery by <b>${eta(5)}</b> | <span class="ok">Free</span></p></div>
+<div class="box"><h2>Shop with confidence</h2><ul class="l"><li>Free delivery</li><li>${p.cat === "shoes" || p.cat === "audio" ? "7" : "10"} days returnable</li><li>Top brand · Secure transaction</li></ul></div>
+<div class="box"><h2>Highlights</h2><ul class="l">${p.hl.map((h) => `<li>${esc(h)}</li>`).join("")}</ul>${p.desc ? `<h2 style="margin-top:14px">Additional Details</h2><p>${esc(p.desc)}</p>` : ""}</div>
+${p.video ? `<div class="box"><h2>Product Video</h2><iframe class="vid" src="https://www.youtube.com/embed/${p.video}" title="Product video" allowfullscreen loading="lazy"></iframe></div>` : ""}</div></div>
+<section class="box" style="margin-top:12px"><h2>Similar Products</h2><div class="grid">${PRODUCTS.filter(
+            (x) => x.cat === p.cat && x.id !== p.id,
+          )
+            .slice(0, 4)
+            .map(card)
+            .join("")}</div></section>`;
+        $$(".sizes button").forEach(
+          (b) =>
+            (b.onclick = () => {
+              size = b.dataset.s;
+              $$(".sizes button").forEach((x) =>
+                x.classList.toggle("on", x === b),
+              );
+              $("#se").textContent = "(" + size + ")";
+            }),
+        );
+        $("#m").onclick = () => {
+          qty = Math.max(1, qty - 1);
+          $("#q").textContent = qty;
+        };
+        $("#pl").onclick = () => {
+          qty = Math.min(10, qty + 1);
+          $("#q").textContent = qty;
+        };
+        const ok = () => {
+          if (p.sizes && !size) {
+            toast("Pehle size select karo");
+            return false;
+          }
+          cart.add(p.id, qty, size);
+          return true;
+        };
+        $("#add").onclick = () => ok() && toast("Cart mein add ho gaya ✓");
+        $("#buy").onclick = () => ok() && (location.href = "checkout.html");
+      }
+    </script>
+  </body>
+</html>

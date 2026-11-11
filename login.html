@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Login - OnlineShop</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div id="hdr"></div>
+    <main class="wrap">
+      <div class="box auth">
+        <div class="tabs">
+          <button class="on" id="t1">Login</button
+          ><button id="t2">Sign Up</button>
+        </div>
+        <form id="f" novalidate>
+          <input id="name" placeholder="Full name" hidden /><input
+            id="id"
+            placeholder="Email ya Mobile number"
+          /><input
+            id="pw"
+            type="password"
+            placeholder="Password (min 6 characters)"
+          /><button class="btn big" id="go">Login</button>
+        </form>
+        <p class="g ctr" style="margin-top: 12px; font-size: 12px">
+          Demo project: account sirf aapke browser mein save hota hai.
+        </p>
+      </div>
+    </main>
+    <div id="ftr"></div>
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+      chrome();
+      let mode = "login";
+      const sw = (m) => {
+        mode = m;
+        $("#t1").classList.toggle("on", m === "login");
+        $("#t2").classList.toggle("on", m !== "login");
+        $("#name").hidden = m === "login";
+        $("#go").textContent = m === "login" ? "Login" : "Create Account";
+      };
+      $("#t1").onclick = () => sw("login");
+      $("#t2").onclick = () => sw("signup");
+      $("#f").onsubmit = (e) => {
+        e.preventDefault();
+        const id = $("#id").value.trim().toLowerCase(),
+          pw = $("#pw").value,
+          name = $("#name").value.trim();
+        if (!/^\S+@\S+\.\S+$/.test(id) && !/^[6-9]\d{9}$/.test(id))
+          return toast("Sahi email ya 10-digit mobile number daalo");
+        if (pw.length < 6)
+          return toast("Password kam se kam 6 characters ka ho");
+        const users = st.get("users", []);
+        if (mode === "signup") {
+          if (name.length < 2) return toast("Apna naam daalo");
+          if (users.some((u) => u.id === id))
+            return toast("Ye account pehle se hai, login karo");
+          users.push({ id, name, pw });
+          st.set("users", users);
+          st.set("user", { id, name });
+        } else {
+          const u = users.find((u) => u.id === id && u.pw === pw);
+          if (!u) return toast("Galat email/mobile ya password");
+          st.set("user", { id: u.id, name: u.name });
+        }
+        location.href = qs.get("next") || "index.html";
+      };
+    </script>
+  </body>
+</html>

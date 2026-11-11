@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Checkout - OnlineShop</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div id="hdr"></div>
+    <main class="wrap" style="margin-top: 12px">
+      <div class="two">
+        <div>
+          <section class="box">
+            <h2>1. Delivery Address</h2>
+            <div class="f2">
+              <input id="name" placeholder="Full name" /><input
+                id="mobile"
+                placeholder="10-digit mobile number"
+                inputmode="numeric"
+                maxlength="10"
+              />
+              <input
+                id="pin"
+                placeholder="Pincode"
+                inputmode="numeric"
+                maxlength="6"
+              /><input id="city" placeholder="City" />
+              <select id="state">
+                <option value="">Select state</option>
+                <option>Uttar Pradesh</option>
+                <option>Delhi</option>
+                <option>Maharashtra</option>
+                <option>Rajasthan</option>
+                <option>Madhya Pradesh</option>
+                <option>Gujarat</option>
+                <option>Karnataka</option>
+                <option>Tamil Nadu</option>
+                <option>West Bengal</option>
+                <option>Bihar</option>
+                <option>Punjab</option>
+                <option>Haryana</option>
+                <option>Other</option>
+              </select>
+              <input id="country" value="India" disabled /><textarea
+                id="addr"
+                class="full"
+                rows="2"
+                placeholder="Address (House no., Building, Street, Area)"
+              ></textarea>
+            </div>
+          </section>
+          <section class="box">
+            <h2>2. Payment Options</h2>
+            <div class="tabs" id="tabs">
+              <button data-m="upi" class="on"><img class="pi" src="images/payment/upi.svg" alt="" />UPI</button
+              ><button data-m="card"><img class="pi" src="images/payment/card.svg" alt="" />Credit / Debit Card</button
+              ><button data-m="nb"><img class="pi" src="images/payment/netbanking.svg" alt="" />Net Banking</button
+              ><button data-m="cod"><img class="pi" src="images/payment/cod.svg" alt="" />Cash on Delivery</button>
+            </div>
+            <div id="upi">
+              <div class="apps">
+                <label
+                  ><input
+                    type="radio"
+                    name="app"
+                    value="PhonePe"
+                    checked
+                  /><img class="pi" src="images/payment/phonepe.svg" alt="" />PhonePe</label
+                ><label
+                  ><input type="radio" name="app" value="Google Pay" /><img class="pi" src="images/payment/googlepay.svg" alt="" />Google
+                  Pay</label
+                ><label
+                  ><input type="radio" name="app" value="Paytm" /><img class="pi" src="images/payment/paytm.svg" alt="" />Paytm</label
+                ><label
+                  ><input type="radio" name="app" value="Other UPI" /><img class="pi" src="images/payment/upi.svg" alt="" />Other
+                  UPI</label
+                >
+              </div>
+              <div class="subtabs" id="upimode">
+                <button type="button" data-u="id" class="on">Enter UPI ID</button
+                ><button type="button" data-u="qr">Scan QR Code</button>
+              </div>
+              <div id="upiid">
+                <input
+                  id="vpa"
+                  placeholder="Enter UPI ID (e.g. name@okaxis)"
+                  style="max-width: 400px"
+                />
+              </div>
+              <div id="upiqr" class="qrbox" hidden>
+                <div class="qrimg" id="qrimg"></div>
+                <div class="qrtxt">
+                  <b>Scan karke pay karo</b>
+                  <p class="g">
+                    PhonePe, Google Pay, Paytm ya kisi bhi UPI app se is QR
+                    code ko scan karo.
+                  </p>
+                  <p class="qramt" id="qramt"></p>
+                  <p class="g" style="font-size: 12px">
+                    Scan karne ke baad payment complete karke neeche
+                    <b>PAY</b> button dabao.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div id="card" hidden>
+              <div class="cc">
+                <input
+                  id="cn"
+                  class="full"
+                  placeholder="Card number"
+                  inputmode="numeric"
+                  maxlength="19"
+                  autocomplete="cc-number"
+                /><input
+                  id="ch"
+                  class="full"
+                  placeholder="Name on card"
+                /><input
+                  id="ce"
+                  placeholder="MM/YY"
+                  maxlength="5"
+                  inputmode="numeric"
+                /><input
+                  id="cv"
+                  type="password"
+                  placeholder="CVV"
+                  maxlength="3"
+                  inputmode="numeric"
+                />
+              </div>
+              <p class="g" style="margin-top: 8px; font-size: 12px">
+                Demo test card: 4111 1111 1111 1111, any future expiry, CVV 123
+              </p>
+            </div>
+            <div id="nb" hidden>
+              <select id="bank" style="max-width: 400px">
+                <option value="">Select your bank</option>
+                <option>State Bank of India</option>
+                <option>HDFC Bank</option>
+                <option>ICICI Bank</option>
+                <option>Axis Bank</option>
+                <option>Punjab National Bank</option>
+                <option>Bank of Baroda</option>
+                <option>Kotak Mahindra Bank</option>
+              </select>
+            </div>
+            <div id="cod" hidden>
+              <p>
+                Order deliver hone par cash ya UPI se payment karein. Koi extra
+                charge nahi.
+              </p>
+            </div>
+          </section>
+        </div>
+        <aside class="box sum" id="sum"></aside>
+      </div>
+    </main>
+    <div class="ov" id="ov">
+      <div>
+        <div class="sp"></div>
+        <b id="ovt">Processing payment…</b>
+        <p class="g">Page ko refresh ya band mat karo</p>
+      </div>
+    </div>
+    <div id="ftr"></div>
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/qrcode.js"></script>
+    <script>
+      const u = st.get("user");
+      if (!cart.get().length) location.replace("cart.html");
+      else if (!u) location.replace("login.html?next=checkout.html");
+      else {
+        chrome();
+        const saved = st.get("addr", {});
+        $("#name").value = saved.name || u.name;
+        ["mobile", "pin", "city", "state", "addr"].forEach(
+          (k) => saved[k] && ($("#" + k).value = saved[k]),
+        );
+        let m = "upi",
+          um = "id";
+        const t = cart.totals(),
+          items = cart.get().filter((i) => byId(i.id));
+        $("#sum").innerHTML = `<h3>Order Summary</h3>${items
+          .map((i) => {
+            const p = byId(i.id);
+            return `<div class="r"><span>${esc(p.name.slice(0, 30))}${p.name.length > 30 ? "…" : ""} × ${i.qty}</span><span>${inr(p.price * i.qty)}</span></div>`;
+          })
+          .join(
+            "",
+          )}<div class="r"><span>Delivery</span><span class="${t.ship ? "" : "ok"}">${t.ship ? inr(t.ship) : "FREE"}</span></div><div class="r t"><span>Total</span><span>${inr(t.total)}</span></div><button class="btn big" id="pay"></button><p class="g" style="font-size:12px;margin-top:10px">🔒 Safe and secure payments</p>`;
+        // UPI QR (demo merchant UPI ID - apni asli UPI ID yahan daalo)
+        const MERCHANT_VPA = "onlineshop@upi",
+          MERCHANT_NAME = "OnlineShop";
+        const upiLink =
+          "upi://pay?pa=" +
+          encodeURIComponent(MERCHANT_VPA) +
+          "&pn=" +
+          encodeURIComponent(MERCHANT_NAME) +
+          "&am=" +
+          t.total +
+          "&cu=INR&tn=" +
+          encodeURIComponent("Order payment");
+        $("#qrimg").innerHTML = makeQR(upiLink, 190);
+        $("#qramt").textContent = "Amount: " + inr(t.total);
+        $$("#upimode button").forEach(
+          (b) =>
+            (b.onclick = () => {
+              um = b.dataset.u;
+              $$("#upimode button").forEach((x) =>
+                x.classList.toggle("on", x === b),
+              );
+              $("#upiid").hidden = um !== "id";
+              $("#upiqr").hidden = um !== "qr";
+            }),
+        );
+        const lbl = () =>
+          ($("#pay").textContent =
+            m === "cod" ? "PLACE ORDER" : "PAY " + inr(t.total));
+        lbl();
+        $$("#tabs button").forEach(
+          (b) =>
+            (b.onclick = () => {
+              m = b.dataset.m;
+              $$("#tabs button").forEach((x) =>
+                x.classList.toggle("on", x === b),
+              );
+              ["upi", "card", "nb", "cod"].forEach(
+                (k) => ($("#" + k).hidden = k !== m),
+              );
+              lbl();
+            }),
+        );
+        $("#cn").oninput = (e) =>
+          (e.target.value = e.target.value
+            .replace(/\D/g, "")
+            .slice(0, 16)
+            .replace(/(.{4})/g, "$1 ")
+            .trim());
+        $("#ce").oninput = (e) => {
+          let v = e.target.value.replace(/\D/g, "").slice(0, 4);
+          e.target.value = v.length > 2 ? v.slice(0, 2) + "/" + v.slice(2) : v;
+        };
+        ["mobile", "pin", "cv"].forEach(
+          (k) =>
+            ($("#" + k).oninput = (e) =>
+              (e.target.value = e.target.value.replace(/\D/g, ""))),
+        );
+        const luhn = (n) => {
+          let s = 0,
+            d = false;
+          for (let i = n.length - 1; i >= 0; i--) {
+            let x = +n[i];
+            if (d) {
+              x *= 2;
+              if (x > 9) x -= 9;
+            }
+            s += x;
+            d = !d;
+          }
+          return s % 10 === 0;
+        };
+        function bad(id, msg) {
+          const e = $("#" + id);
+          e.classList.add("err");
+          e.focus();
+          toast(msg);
+          e.oninput && 0;
+          e.addEventListener("input", () => e.classList.remove("err"), {
+            once: true,
+          });
+          return false;
+        }
+        function valid() {
+          $$(".err").forEach((e) => e.classList.remove("err"));
+          const v = (k) => $("#" + k).value.trim();
+          if (v("name").length < 2) return bad("name", "Naam daalo");
+          if (!/^[6-9]\d{9}$/.test(v("mobile")))
+            return bad("mobile", "Sahi 10-digit mobile number daalo");
+          if (!/^[1-9]\d{5}$/.test(v("pin")))
+            return bad("pin", "Sahi 6-digit pincode daalo");
+          if (v("city").length < 2) return bad("city", "City daalo");
+          if (!v("state")) return bad("state", "State select karo");
+          if (v("addr").length < 10) return bad("addr", "Poora address daalo");
+          if (m === "upi" && um === "id" && !/^[\w.\-]{2,}@[a-zA-Z]{2,}$/.test(v("vpa")))
+            return bad("vpa", "Sahi UPI ID daalo (name@bank)");
+          if (m === "card") {
+            const n = v("cn").replace(/\s/g, "");
+            if (n.length < 13 || !luhn(n))
+              return bad("cn", "Card number galat hai");
+            if (v("ch").length < 2)
+              return bad("ch", "Card par likha naam daalo");
+            const mm = +v("ce").slice(0, 2),
+              yy = +v("ce").slice(3),
+              now = new Date();
+            if (
+              !/^\d\d\/\d\d$/.test(v("ce")) ||
+              mm < 1 ||
+              mm > 12 ||
+              new Date(2000 + yy, mm) <= now
+            )
+              return bad("ce", "Card expire ho chuka hai ya date galat hai");
+            if (!/^\d{3}$/.test(v("cv"))) return bad("cv", "3-digit CVV daalo");
+          }
+          if (m === "nb" && !v("bank")) return bad("bank", "Bank select karo");
+          return true;
+        }
+        $("#pay").onclick = () => {
+          if (!valid()) return;
+          const v = (k) => $("#" + k).value.trim();
+          const addr = {
+            name: v("name"),
+            mobile: v("mobile"),
+            pin: v("pin"),
+            city: v("city"),
+            state: v("state"),
+            addr: v("addr"),
+          };
+          st.set("addr", addr);
+          const pm = {
+            upi:
+              um === "qr"
+                ? "UPI (QR Scan)"
+                : "UPI (" +
+                  document.querySelector("[name=app]:checked").value +
+                  ")",
+            card: "Card ending " + v("cn").replace(/\s/g, "").slice(-4),
+            nb: "Net Banking (" + v("bank") + ")",
+            cod: "Cash on Delivery",
+          }[m];
+          $("#ovt").textContent =
+            m === "cod" ? "Placing your order…" : "Processing payment…";
+          $("#ov").classList.add("on");
+          setTimeout(() => {
+            const o = {
+              id: "OD" + Date.now().toString().slice(-10),
+              date: new Date().toISOString(),
+              items: items.map((i) => ({
+                ...i,
+                name: byId(i.id).name,
+                price: byId(i.id).price,
+                img: byId(i.id).img,
+              })),
+              addr,
+              pay: pm,
+              total: t.total,
+              ship: t.ship,
+              paid: m !== "cod",
+            };
+            const os = st.get("orders", []);
+            os.unshift(o);
+            st.set("orders", os);
+            cart.clear();
+            location.href = "success.html?id=" + o.id;
+          }, 2200);
+        };
+      }
+    </script>
+  </body>
+</html>

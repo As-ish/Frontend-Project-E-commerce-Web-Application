@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Order Confirmed - OnlineShop</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div id="hdr"></div>
+    <main class="wrap" id="main" style="margin-top: 12px"></main>
+    <div id="ftr"></div>
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+      chrome();
+      const o = st.get("orders", []).find((x) => x.id === qs.get("id"));
+      $("#main").innerHTML = !o
+        ? '<div class="box ctr">Order nahi mila. <a class="lnk" href="index.html">Home</a></div>'
+        : `<div class="box done"><img src="images/order-confirmed.jpg" alt=""><div class="tick">✓</div><h2>Order Confirmed!</h2><p>Order ID: <b>${o.id}</b></p><p class="g">${o.paid ? "Payment received" : "Pay on delivery"} · ${esc(o.pay)}</p><p>🚚 Expected delivery by <b>${eta(5)}</b></p></div>
+<div class="two"><div class="box"><h2>Items</h2>${o.items.map((i) => `<div class="item"><img src="${i.img}" alt=""><div><b>${esc(i.name)}</b><div class="g">${i.size ? "Size: " + esc(i.size) + " · " : ""}Qty: ${i.qty}</div></div><b>${inr(i.price * i.qty)}</b></div>`).join("")}<div class="bar" style="margin-top:12px"><b>Total ${o.paid ? "Paid" : "to Pay"}</b><b>${inr(o.total)}</b></div></div>
+<div class="box"><h2>Delivery Address</h2><b>${esc(o.addr.name)}</b><p>${esc(o.addr.addr)}<br>${esc(o.addr.city)}, ${esc(o.addr.state)} - ${esc(o.addr.pin)}<br>Mobile: ${esc(o.addr.mobile)}</p><a class="btn" style="margin-top:14px" href="index.html">Continue Shopping</a></div></div>`;
+    </script>
+  </body>
+</html>
